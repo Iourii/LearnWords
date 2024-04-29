@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Learning Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f1f1;
+        }
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .word-block {
+            border-bottom: 2px solid #ddd;  /* Разделительная линия между вариантами и кнопкой */
+            padding-bottom: 20px;  /* Добавляем отступ снизу */
+            margin-bottom: 20px;  /* Дополнительный отступ снизу, чтобы отделить от кнопки */
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;  /* Добавляем анимацию для плавного изменения цвета */
+        }
+        button:hover {
+            background-color: #0056b3;  /* Темнее при наведении */
+        }
+        button.correct {
+            background-color: #28a745;  /* Зеленый цвет для правильного ответа */
+        }
+        button.incorrect {
+            background-color: #dc3545;  /* Красный цвет для неправильного ответа */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Language Learning Service</h1>
+        <div class="word-block" id="word-container">
+            <h2 id="word"></h2>
+            <div id="options"></div>
+        </div>
+        <button id="next-btn">Next Word</button>  <!-- Кнопка отделена от блока с вариантами -->
+    </div>
+
+    <script>
+        // Проверяем, сохранен ли уже идентификатор пользователя в localStorage
+        var userId = localStorage.getItem('userId');
+        if (!userId) {
+            // Если нет, запрашиваем его у пользователя
+            userId = prompt('Please enter your user ID:');
+            localStorage.setItem('userId', userId);
+        }
+
+        // Обработчик нажатия на кнопку "Next Word"
+        document.getElementById('next-btn').addEventListener('click', function() {
+            fetch('/train?user_id=' + userId , {mode: 'cors'})
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('word').textContent = data.word;
+                    document.getElementById('options').innerHTML = '';
+                    data.options.forEach(function(option, index) {
+                        var btn = document.createElement('button');
+                        btn.textContent = option;
+                        btn.addEventListener('click', function() {
+                            if (option === data.correct) {
+                                btn.classList.add('correct');
+                               // alert('Correct!');															
+								const children = document.getElementById('options').children;  // Возвращает все дочерние элементы
+								// Отключаем каждого ребенка
+								for (const child of children) {
+								  if (child.disabled !== undefined) {  // Проверяем, поддерживает ли элемент свойство 'disabled'
+									child.disabled = true;  // Отключаем элемент
+								  }
+								}
+                            } else {
+                                btn.classList.add('incorrect');
+                            }
+                        });
+                        document.getElementById('options').appendChild(btn);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

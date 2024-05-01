@@ -7,6 +7,7 @@ CORS(app)
 
 # Словарь для хранения слов и переводов
 word_dict = {}
+word_dict_reverse = {}
 
 @app.route('/')
 def index():
@@ -15,29 +16,17 @@ def index():
 
 @app.route('/add_word', methods=['POST'])
 def add_word():
-    """
-    Эндпойнт для добавления целого словаря слов и переводов.
-    Ожидается JSON-объект, где ключи — это слова, а значения — списки переводов.
-    """
     data = request.json  # Получаем JSON-данные из запроса
-
     if not data:
         return jsonify({'error': 'No data provided'}), 400  # Если нет данных, возвращаем ошибку
 
-    for word, translations in data.items():
-        if not isinstance(translations, list):
-            return jsonify({'error': f'Translations for "{word}" should be a list'}), 400
-
+    for word, translation in data.items():
         if word not in word_dict:
-            word_dict[word] = []
-
-        # Добавляем переводы к слову, избегая дубликатов
-        for translation in translations:
-            if translation not in word_dict[word]:
-                word_dict[word].append(translation)
+            word_dict[word] = translation
+        if translation not in word_dict_reverse:
+            word_dict_reverse[translation] = word
 
     return jsonify({'message': 'Words added successfully'}), 200  # Ответ при успешном добавлении
-
 
 @app.route('/train', methods=['GET'])
 def train():
@@ -48,15 +37,22 @@ def train():
     if not word_dict:
         return jsonify({'error': 'Dictionary is empty'}), 400
 
-    word = random.choice(list(word_dict.keys()))
-    correct_translation = random.choice(word_dict[word])
+    direction = request.args.get('direction', 'forward')
+
+    if direction == 'forward':
+        temp_dic = word_dict
+    else:
+        temp_dic = word_dict_reverse
+
+    word = random.choice(list(temp_dic.keys()))
+    correct_translation = temp_dic[word]
 
     # Составление списка из 4 вариантов перевода (с одним правильным)
-    translations = set(word_dict[word])
+    translations = set()
+    translations.add(correct_translation)
     while len(translations) < 4:
-        random_word = random.choice(list(word_dict.keys()))
-        random_translation = random.choice(word_dict[random_word])
-        translations.add(random_translation)
+        random_word = random.choice(list(temp_dic.keys()))
+        translations.add(temp_dic[random_word])
 
     # Преобразование в список для JSON-вывода
     translations = list(translations)

@@ -50,11 +50,28 @@
         button.incorrect {
             background-color: #dc3545;  /* Красный цвет для неправильного ответа */
         }
+        button#next-btn {
+            background-color: #00468d;  /* Красный цвет для неправильного ответа */
+        }
+        .header {
+            display: flex; /* Задаёт flexbox модель отображения */
+            justify-content: space-between; /* Равномерно распределяет элементы в контейнере с равными промежутками */
+            align-items: center; /* Центрирует элементы по вертикали */
+        }
+        h1 {
+            margin: 10px; /* Добавляет небольшой отступ вокруг каждого заголовка */
+        }
+        h1#good {color: #28a745;}
+        h1#bad {color: #dc3545;}
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Language Learning Service</h1>
+        <div class="header">
+            <h1 id="good">0</h1>
+            <h1>WLS</h1>
+            <h1 id="bad">0</h1>
+        </div>
         <div class="word-block" id="word-container">
             <h2 id="word"></h2>
             <div id="options"></div>
@@ -84,7 +101,7 @@
                         btn.addEventListener('click', function() {
                             if (option === data.correct) {
                                 btn.classList.add('correct');
-                               // alert('Correct!');															
+                                document.getElementById('good').textContent = parseInt(document.getElementById('good').textContent) + 1
 								const children = document.getElementById('options').children;  // Возвращает все дочерние элементы
 								// Отключаем каждого ребенка
 								for (const child of children) {
@@ -94,6 +111,7 @@
 								}
                             } else {
                                 btn.classList.add('incorrect');
+                                document.getElementById('bad').textContent = parseInt(document.getElementById('bad').textContent) + 1
                             }
                         });
                         document.getElementById('options').appendChild(btn);

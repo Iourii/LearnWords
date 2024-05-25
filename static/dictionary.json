@@ -1,0 +1,78 @@
+[
+    {
+      "name": "Спряжение глаголов",
+      "goDeep": true,
+      "members": [
+        {
+          "key": "Είμαι",
+           "members":
+                [
+                    {
+                      "word": "Είμαι",
+                      "translation": "я ем"
+                    },
+                    {
+                      "word": "Είvαι",
+                      "translation": "он есть"
+                    }
+                ]
+        },
+        {
+          "key": "Έχω",
+           "members":
+                [
+                    {
+                      "word": "Έχω",
+                      "translation": "Я имею"
+                    },
+                    {
+                      "word": "Έχoume",
+                      "translation": "Мы имеeм"
+                    }
+                ]
+        }
+      ]
+    },
+    {
+      "name": "Глаголы",
+      "goDeep": false,
+      "members": [
+        {
+          "word": "Είμαι",
+          "translation": "быть"
+        },
+        {
+          "word": "Έχω",
+          "translation": "иметь"
+        },
+        {
+          "word": "Κάνω",
+          "translation": "делать"
+        },
+        {
+          "word": "Πάω",
+          "translation": "идти"
+        },
+        {
+          "word": "Έρχομαι",
+          "translation": "приходить"
+        },
+        {
+          "word": "Βλέπω",
+          "translation": "видеть"
+        },
+        {
+          "word": "Ακούω",
+          "translation": "слушать"
+        },
+        {
+          "word": "Ξέρω",
+          "translation": "знать"
+        },
+        {
+          "word": "Θέλω",
+          "translation": "хотеть"
+        }
+      ]
+    }
+]

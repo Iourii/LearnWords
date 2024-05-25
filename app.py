@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import random
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -8,6 +9,10 @@ CORS(app)
 # Словарь для хранения слов и переводов
 word_dict = {}
 word_dict_reverse = {}
+
+greek = 0
+rus = 1
+
 
 @app.route('/')
 def index():
@@ -34,8 +39,8 @@ def train():
     Эндпойнт для тренировки. Возвращает набор из одного слова и 4 переводов,
     один из которых верный.
     """
-    if not word_dict:
-        return jsonify({'error': 'Dictionary is empty'}), 400
+    #if not word_dict:
+    #    return jsonify({'error': 'Dictionary is empty'}), 400
 
     direction = request.args.get('direction', 'forward')
 
@@ -62,6 +67,30 @@ def train():
         'word': word,
         'options': translations,
         'correct': correct_translation
+    }), 200
+
+@app.route('/test', methods=['GET'])
+def test():
+    # Открываем и читаем JSON файл
+    with open('static/dictionary_short.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    # Извлекаем многомерный массив
+    #array = data['array']
+
+    print(data[0]['name'])
+    print(data[0]['goDeep'])
+    print(data[0]['members'][0]['members'][0][greek])
+    print(data[0]['members'][0]['members'][0][rus])
+    #array[1]
+
+    # Печатаем результат
+    #print(array)
+
+    return jsonify({
+        'word': 'word',
+        'options': 'translations',
+        'correct': 'correct_translation'
     }), 200
 
 if __name__ == '__main__':

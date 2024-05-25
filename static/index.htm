@@ -28,7 +28,7 @@
             padding-bottom: 20px;  /* Добавляем отступ снизу */
             margin-bottom: 20px;  /* Дополнительный отступ снизу, чтобы отделить от кнопки */
         }
-        button {
+        button, select {
             display: block;
             width: 100%;
             padding: 10px;
@@ -41,7 +41,7 @@
             cursor: pointer;
             transition: background-color 0.3s;  /* Добавляем анимацию для плавного изменения цвета */
         }
-        button:hover {
+        button, select:hover {
             background-color: #0056b3;  /* Темнее при наведении */
         }
         button.correct {
@@ -118,9 +118,19 @@
     <div id="myModal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
+        <p>Choose a dictionary:</p>
+        <select name="dict" id="dictionary" onclick="handleChoice()")>
+          <option value="verbs">Глаголы (Top 100)</option>
+          <option value="phrases">Фразы</option>
+        </select>
         <p>Choose a direction:</p>
-        <button onclick="handleChoice('forward')">Greek=>Rus</button>
+        <select name="direct" id="direction" onclick="handleChoice()")>
+          <option value="forward">Greek=>Rus</option>
+          <option value="reverse">Rus=>Greek</option>
+        </select>
+        <!-- <button onclick="handleChoice('forward')">Greek=>Rus</button>
         <button onclick="handleChoice('reverse')">Rus=>Greek</button>
+        -->
       </div>
     </div>
     <script>
@@ -142,8 +152,18 @@
 
         // Обработчик нажатия на кнопку "Next Word"
         document.getElementById('next-btn').addEventListener('click', function() {
-            var direction = localStorage.getItem('direction');
-            fetch('/train?direction=' + direction , {mode: 'cors'})
+            // var direction = localStorage.getItem('direction');
+            // var dictionary = localStorage.getItem('dictionary');
+            const params = {
+                    direction: localStorage.getItem('direction'),
+                    dictionary: localStorage.getItem('dictionary')
+                };
+
+            // Создаем строку параметров
+            const queryString = new URLSearchParams(params).toString();
+
+            //fetch('/train?direction=' + direction  +  , {mode: 'cors'})
+            fetch('/train?${queryString}', {mode: 'cors'})
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('word').textContent = data.word;
@@ -196,11 +216,14 @@
         })
 
         // Обработка выбора
-        function handleChoice(choice) {
-          console.log("User chose: " + choice);
-          localStorage.setItem('direction', choice);
-          modal.style.display = "none";
-          document.getElementById('next-btn').click();
+        function handleChoice() {
+          choiceDirection = document.getElementById("direction").value
+          choiceDictionary = document.getElementById("dictionary").value
+          console.log("User chose: " + choiceDirection + ", " + choiceDictionary);
+          localStorage.setItem('direction', choiceDirection);
+          localStorage.setItem('dictionary', choiceDictionary);
+       //   modal.style.display = "none";
+       //   document.getElementById('next-btn').click();
         }
     </script>
 </body>

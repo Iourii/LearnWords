@@ -1,7 +1,7 @@
 import requests
 
-url = 'http://127.0.0.1:5001/add_word'
-# url = 'http://13.51.64.166/add_word'
+#url = 'http://127.0.0.1:5001/add_word'
+url = 'http://13.51.64.166/add_word'
 data = {
     "Είμαι": "быть",
     "Έχω": "иметь",

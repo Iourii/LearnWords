@@ -2,3 +2,7 @@ dictkey	name	file	nested
 verbs	Базовые глаголы	verbs.csv	1
 top100	Top 100 слов	topwords.csv	1
 verbs2	Глаголы склонение	verbs2.csv	2
+verbs3	Глаголы 3	verbs3.csv	2
+dicta2	А2 словарь	dicta2.csv	1
+sum	Сложение	sum.csv	1
+multy	Умножение	multy.csv	1

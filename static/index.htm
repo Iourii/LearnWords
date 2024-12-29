@@ -165,7 +165,8 @@
 
             //fetch('/train?direction=' + direction  +  , {mode: 'cors'})
             //~ fetch('/train?${queryString}', {mode: 'cors'})
-            fetch('http://127.0.0.1:5001/train2?'+queryString, {mode: 'cors'})
+            // fetch('http://127.0.0.1:5001/train2?'+queryString, {mode: 'cors'})
+            fetch('/train2?'+queryString, {mode: 'cors'})
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('word').textContent = data.word;

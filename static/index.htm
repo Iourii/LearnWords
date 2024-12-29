@@ -121,12 +121,13 @@
         <p>Choose a dictionary:</p>
         <select name="dict" id="dictionary" onclick="handleChoice()")>
           <option value="verbs">Глаголы (Top 100)</option>
-          <option value="phrases">Фразы</option>
+          <option value="verbs2">Глаголы Склонения</option>
+          <option value="top100">Top 100 слов</option>
         </select>
         <p>Choose a direction:</p>
         <select name="direct" id="direction" onclick="handleChoice()")>
-          <option value="forward">Greek=>Rus</option>
-          <option value="reverse">Rus=>Greek</option>
+          <option value="forward">Forward direction</option>
+          <option value="reverse">Reverse direction</option>
         </select>
         <!-- <button onclick="handleChoice('forward')">Greek=>Rus</button>
         <button onclick="handleChoice('reverse')">Rus=>Greek</button>
@@ -159,11 +160,12 @@
                     dictionary: localStorage.getItem('dictionary')
                 };
 
-            // Создаем строку параметров
+            // Создаем строку параметровdictionary
             const queryString = new URLSearchParams(params).toString();
 
             //fetch('/train?direction=' + direction  +  , {mode: 'cors'})
-            fetch('/train?${queryString}', {mode: 'cors'})
+            //~ fetch('/train?${queryString}', {mode: 'cors'})
+            fetch('http://127.0.0.1:5001/train2?'+queryString, {mode: 'cors'})
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('word').textContent = data.word;
